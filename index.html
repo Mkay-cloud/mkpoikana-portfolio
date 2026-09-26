@@ -38,6 +38,7 @@ a{color:#F2F1EE}a:hover{color:#B98CFF}
 html{scroll-behavior:smooth}
 @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes glow{0%,100%{filter:grayscale(1) contrast(1.08) brightness(1.02) drop-shadow(0 0 5px rgba(255,255,255,.4)) drop-shadow(0 0 22px rgba(155,92,255,.35))}50%{filter:grayscale(1) contrast(1.08) brightness(1.06) drop-shadow(0 0 10px rgba(236,224,255,.75)) drop-shadow(0 0 48px rgba(140,70,255,.7))}}
+@media (max-width:700px){.svc-row{grid-template-columns:40px minmax(0,1fr)!important;row-gap:10px!important;padding:32px 4px!important}.svc-row>:last-child{grid-column:2}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 </style>
 </helmet>
@@ -123,7 +124,7 @@ html{scroll-behavior:smooth}
   </div>
   <div style="display:flex;flex-direction:column;border-top:1px solid #2A2A28">
     <sc-for list="{{ services }}" as="s" hint-placeholder-count="4">
-      <div style="display:grid;grid-template-columns:minmax(0,90px) minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:baseline;padding:40px 20px;border-bottom:1px solid #2A2A28;transition:background .35s,color .35s" style-hover="background:#F2F1EE;color:#0A0A0A">
+      <div class="svc-row" style="display:grid;grid-template-columns:minmax(0,90px) minmax(0,1.1fr) minmax(0,1fr);gap:24px;align-items:baseline;padding:40px 20px;border-bottom:1px solid #2A2A28;transition:background .35s,color .35s" style-hover="background:#F2F1EE;color:#0A0A0A">
         <div style="font-family:'Playfair Display';font-style:italic;font-size:22px;opacity:.55">{{ s.n }}</div>
         <div style="font-family:'Playfair Display';font-size:clamp(28px,3.2vw,44px);line-height:1.05">{{ s.title }}</div>
         <div style="font-size:17px;line-height:1.6;font-weight:300;opacity:.8;text-wrap:pretty">{{ s.desc }}</div>
@@ -194,7 +195,7 @@ html{scroll-behavior:smooth}
   </div>
 </section>
 
-<section id="cta" data-screen-label="CTA" style="padding:140px 0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:36px;position:relative">
+<section id="cta" data-screen-label="CTA" style="padding:140px 0;text-align:center;display:flex;flex-direction:column;align-items:center;gap:36px;position:relative;overflow:hidden">
   <div style="position:absolute;left:50%;top:50%;width:760px;height:760px;transform:translate(-50%,-50%);background:radial-gradient(closest-side,rgba(155,92,255,.16),rgba(155,92,255,0));pointer-events:none"></div>
   <div style="font-size:13px;letter-spacing:.3em;color:#8C8C88;position:relative">GOT A PROJECT IN MIND?</div>
   <h2 style="font-family:'Playfair Display';font-weight:400;font-size:clamp(56px,9vw,140px);line-height:.95;margin:0;letter-spacing:-.03em;position:relative">Ready to<br><em style="background:linear-gradient(100deg,#C9A3FF 0%,#9B5CFF 45%,#6A2CF5 100%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-fill-color:transparent;padding-right:.08em">get found?</em></h2>
