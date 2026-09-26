@@ -307,9 +307,9 @@ html{scroll-behavior:smooth}
     <div style="border:1px solid #242424;border-radius:20px;background:rgba(20,20,20,.7);backdrop-filter:blur(10px);padding:clamp(28px,4vw,48px)">
       <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
         <div style="display:flex;flex-direction:column;gap:32px">
-          <label style="display:flex;flex-direction:column;gap:10px;font-size:13px;letter-spacing:.22em;color:#8C8C88">YOUR NAME<input placeholder="Jane Smith" style="background:transparent;border:none;border-bottom:1px solid #3A3A38;padding:10px 0 14px;font-size:20px;font-family:'Jost';color:#F2F1EE;outline:none;letter-spacing:0" style-focus="border-bottom-color:#9B5CFF"></label>
-          <label style="display:flex;flex-direction:column;gap:10px;font-size:13px;letter-spacing:.22em;color:#8C8C88">EMAIL<input placeholder="jane@business.com" style="background:transparent;border:none;border-bottom:1px solid #3A3A38;padding:10px 0 14px;font-size:20px;font-family:'Jost';color:#F2F1EE;outline:none;letter-spacing:0" style-focus="border-bottom-color:#9B5CFF"></label>
-          <label style="display:flex;flex-direction:column;gap:10px;font-size:13px;letter-spacing:.22em;color:#8C8C88">CURRENT WEBSITE<input placeholder="business.com (or none yet)" style="background:transparent;border:none;border-bottom:1px solid #3A3A38;padding:10px 0 14px;font-size:20px;font-family:'Jost';color:#F2F1EE;outline:none;letter-spacing:0" style-focus="border-bottom-color:#9B5CFF"></label>
+          <label style="display:flex;flex-direction:column;gap:10px;font-size:13px;letter-spacing:.22em;color:#8C8C88">YOUR NAME<input id="cf-name" name="name" type="text" autocomplete="name" placeholder="Jane Smith" style="background:transparent;border:none;border-bottom:1px solid #3A3A38;padding:10px 0 14px;font-size:20px;font-family:'Jost';color:#F2F1EE;outline:none;letter-spacing:0" style-focus="border-bottom-color:#9B5CFF"></label>
+          <label style="display:flex;flex-direction:column;gap:10px;font-size:13px;letter-spacing:.22em;color:#8C8C88">EMAIL<input id="cf-email" name="email" type="email" autocomplete="email" placeholder="jane@business.com" style="background:transparent;border:none;border-bottom:1px solid #3A3A38;padding:10px 0 14px;font-size:20px;font-family:'Jost';color:#F2F1EE;outline:none;letter-spacing:0" style-focus="border-bottom-color:#9B5CFF"></label>
+          <label style="display:flex;flex-direction:column;gap:10px;font-size:13px;letter-spacing:.22em;color:#8C8C88">CURRENT WEBSITE<input id="cf-site" name="site" type="text" autocomplete="url" placeholder="business.com (or none yet)" style="background:transparent;border:none;border-bottom:1px solid #3A3A38;padding:10px 0 14px;font-size:20px;font-family:'Jost';color:#F2F1EE;outline:none;letter-spacing:0" style-focus="border-bottom-color:#9B5CFF"></label>
           <div style="display:flex;flex-direction:column;gap:14px">
             <div style="font-size:13px;letter-spacing:.22em;color:#8C8C88">WHAT DO YOU NEED?</div>
             <div style="display:flex;gap:10px;flex-wrap:wrap">
@@ -326,8 +326,10 @@ html{scroll-behavior:smooth}
               </sc-for>
             </div>
           </div>
-          <label style="display:flex;flex-direction:column;gap:10px;font-size:13px;letter-spacing:.22em;color:#8C8C88">TELL ME A BIT MORE<textarea rows="4" placeholder="What does the business do, and what's not working right now?" style="background:transparent;border:none;border-bottom:1px solid #3A3A38;padding:10px 0 14px;font-size:18px;font-family:'Jost';color:#F2F1EE;outline:none;resize:vertical;letter-spacing:0" style-focus="border-bottom-color:#9B5CFF"></textarea></label>
-          <span onClick="{{ send }}" style="cursor:pointer;align-self:flex-start;background:linear-gradient(100deg,#C9A3FF 0%,#9B5CFF 45%,#6A2CF5 100%);color:#FFFFFF;box-shadow:0 0 28px rgba(155,92,255,.4);padding:18px 36px;border-radius:999px;font-weight:500;font-size:16px;letter-spacing:.08em;white-space:nowrap">SEND IT OVER →</span>
+          <label style="display:flex;flex-direction:column;gap:10px;font-size:13px;letter-spacing:.22em;color:#8C8C88">TELL ME A BIT MORE<textarea id="cf-msg" name="message" rows="4" placeholder="What does the business do, and what's not working right now?" style="background:transparent;border:none;border-bottom:1px solid #3A3A38;padding:10px 0 14px;font-size:18px;font-family:'Jost';color:#F2F1EE;outline:none;resize:vertical;letter-spacing:0" style-focus="border-bottom-color:#9B5CFF"></textarea></label>
+          <input id="cf-bot" type="checkbox" name="botcheck" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;opacity:0">
+          <sc-if value="{{ formErr }}" hint-placeholder-val="{{ false }}"><div role="alert" style="font-size:15px;line-height:1.5;color:#FF9C9C">{{ formErr }}</div></sc-if>
+          <span role="button" tabindex="0" onClick="{{ send }}" style="cursor:{{ sendCursor }};opacity:{{ sendOpacity }};align-self:flex-start;background:linear-gradient(100deg,#C9A3FF 0%,#9B5CFF 45%,#6A2CF5 100%);color:#FFFFFF;box-shadow:0 0 28px rgba(155,92,255,.4);padding:18px 36px;border-radius:999px;font-weight:500;font-size:16px;letter-spacing:.08em;white-space:nowrap">{{ sendLabel }}</span>
         </div>
       </sc-if>
       <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
@@ -372,9 +374,42 @@ html{scroll-behavior:smooth}
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { w: 0, t: 0, vw: window.innerWidth, page: 'home', cat: 'ALL', postId: 0, menu: false, needs: ['Website'], budget: null, sent: false };
+  state = { w: 0, t: 0, vw: window.innerWidth, page: 'home', cat: 'ALL', postId: 0, menu: false, sending: false, formErr: '', needs: ['Website'], budget: null, sent: false };
   componentDidMount() { this.onR = () => this.setState({ vw: window.innerWidth }); window.addEventListener('resize', this.onR); this.iv = setInterval(() => this.setState(s => ({ w: (s.w + 1) % 4 })), 2600); }
   componentWillUnmount() { clearInterval(this.iv); window.removeEventListener('resize', this.onR); }
+  async sendForm() {
+    if (this.state.sending) return;
+    const WEB3FORMS_KEY = '33295cc0-e066-4f7a-8b9f-6713c5dc58cf';
+    const val = (id) => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
+    const name = val('cf-name'), email = val('cf-email'), website = val('cf-site'), message = val('cf-msg');
+    const bot = document.getElementById('cf-bot');
+    if (!name || !email || !message) return this.setState({ formErr: 'Please add your name, email and a few lines about the project.' });
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return this.setState({ formErr: 'That email address doesn\'t look right. Please check it.' });
+    this.setState({ sending: true, formErr: '' });
+    try {
+      const res = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          access_key: WEB3FORMS_KEY,
+          subject: 'New project enquiry from ' + name + ' (mkpoikana.online)',
+          from_name: 'mkpoikana.online',
+          replyto: email,
+          name, email, website: website || 'None given',
+          needs: this.state.needs.join(', ') || 'Not specified',
+          budget: this.state.budget || 'Not specified',
+          message,
+          botcheck: bot && bot.checked ? true : ''
+        })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.success) this.setState({ sending: false, sent: true });
+      else throw new Error(data.message || ('HTTP ' + res.status));
+    } catch (err) {
+      console.error('[contact form]', err);
+      this.setState({ sending: false, formErr: 'Sorry, that didn\'t send. Please try again, or email me directly at mkpoikanaotu@gmail.com.' });
+    }
+  }
   renderVals() {
     const s = this.state;
     const words = ['websites', 'rankings', 'landing pages', 'growth'];
@@ -401,7 +436,8 @@ class Component extends DCLogic {
       isHome: s.page === 'home', isContact: s.page === 'contact', sent: s.sent, notSent: !s.sent,
       goContact: (e) => { e && e.preventDefault && e.preventDefault(); this.setState({ page: 'contact' }); window.scrollTo(0, 0); },
       navTo: (e) => { const id = e.currentTarget.getAttribute('href').slice(1); if (this.state.page !== 'home') { e.preventDefault(); this.setState({ page: 'home' }, () => { const el = document.getElementById(id); window.scrollTo(0, el ? el.getBoundingClientRect().top + window.scrollY - 80 : 0); }); } },
-      send: () => this.setState({ sent: true }), reset: () => this.setState({ sent: false }),
+      send: () => this.sendForm(), reset: () => this.setState({ sent: false, formErr: '' }),
+      sendLabel: s.sending ? 'SENDING…' : 'SEND IT OVER →', sendCursor: s.sending ? 'wait' : 'pointer', sendOpacity: s.sending ? '.7' : '1', formErr: s.formErr || '',
       needs: ['Website', 'SEO', 'Technical SEO', 'Website care'].map(n => { const on = s.needs.includes(n); return { label: n, bg: on ? 'rgba(155,92,255,.22)' : 'transparent', border: on ? '#9B5CFF' : '#3A3A38', go: () => this.setState(x => ({ needs: x.needs.includes(n) ? x.needs.filter(y => y !== n) : [...x.needs, n] })) }; }),
       budgets: ['Under $2.5k', '$2.5k – $5k', '$5k – $10k', '$10k+'].map(b => { const on = s.budget === b; return { label: b, bg: on ? 'rgba(155,92,255,.22)' : 'transparent', border: on ? '#9B5CFF' : '#3A3A38', go: () => this.setState({ budget: b }) }; }),
       ...(s.vw < 1040
