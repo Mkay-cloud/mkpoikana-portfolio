@@ -40,17 +40,19 @@ html{scroll-behavior:smooth}
 @keyframes mq{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @keyframes glow{0%,100%{filter:grayscale(1) contrast(1.08) brightness(1.02) drop-shadow(0 0 5px rgba(255,255,255,.4)) drop-shadow(0 0 22px rgba(155,92,255,.35))}50%{filter:grayscale(1) contrast(1.08) brightness(1.06) drop-shadow(0 0 10px rgba(236,224,255,.75)) drop-shadow(0 0 48px rgba(140,70,255,.7))}}
 @media (max-width:700px){.svc-row{grid-template-columns:40px minmax(0,1fr)!important;row-gap:10px!important;padding:32px 4px!important}.svc-row>:last-child{grid-column:2}}
+@media (max-width:899px){.nav-inner{padding:14px 20px!important;flex-wrap:nowrap!important}}
 @keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
 </style>
 </helmet>
 <div style="position:fixed;inset:0;pointer-events:none;z-index:50;opacity:.07;background-image:url(&quot;data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E&quot;)"></div>
 
 <nav style="position:sticky;top:0;z-index:40;background:rgba(10,10,10,.82);backdrop-filter:blur(14px);border-bottom:1px solid #1E1E1E">
-  <div style="max-width:1280px;margin:0 auto;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
+  <div class="nav-inner" style="max-width:1280px;margin:0 auto;padding:18px 32px;display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
     <a href="#top" onClick="{{ navTo }}" style="text-decoration:none;display:flex;align-items:center;gap:14px">
       <img src="assets/logo.png" alt="Mkpoikana Otu logo" width="59" height="32" style="height:32px;width:auto;display:block;align-self:center">
       <span style="font-size:12px;letter-spacing:.28em;color:#8C8C88">MKPOIKANA OTU</span>
     </a>
+    <sc-if value="{{ notMobile }}" hint-placeholder-val="{{ true }}">
     <div style="display:flex;gap:32px;align-items:center;font-size:15px;letter-spacing:.04em;flex-wrap:wrap">
       <a href="#work" onClick="{{ navTo }}" style="text-decoration:none">Projects</a>
       <a href="#services" onClick="{{ navTo }}" style="text-decoration:none">Services</a>
@@ -58,7 +60,27 @@ html{scroll-behavior:smooth}
       <a href="#blog" onClick="{{ goBlog }}" style="text-decoration:none">Blog</a>
       <a onClick="{{ goContact }}" style="cursor:pointer;text-decoration:none;background:linear-gradient(100deg,#C9A3FF 0%,#9B5CFF 45%,#6A2CF5 100%);color:#FFFFFF;padding:11px 22px;border-radius:999px;font-weight:500;box-shadow:0 0 24px rgba(155,92,255,.35);transition:box-shadow .3s" style-hover="box-shadow:0 0 36px rgba(155,92,255,.65);color:#FFFFFF">Start a project</a>
     </div>
+    </sc-if>
+    <sc-if value="{{ isMobile }}" hint-placeholder-val="{{ false }}">
+    <button type="button" onClick="{{ toggleMenu }}" aria-expanded="{{ menuAria }}" aria-controls="mobile-menu" aria-label="{{ menuLabel }}" style="display:flex;align-items:center;gap:14px;background:none;border:0;padding:8px 0;cursor:pointer;color:#F2F1EE;font-family:'Jost',sans-serif;font-size:17px;font-weight:500;letter-spacing:.14em">
+      <span>{{ menuWord }}</span>
+      <span style="position:relative;display:block;width:30px;height:20px">
+        <span style="position:absolute;left:0;right:0;height:2px;border-radius:2px;background:#F2F1EE;transition:transform .3s,top .3s;top:{{ bar1Top }};transform:{{ bar1Rot }}"></span>
+        <span style="position:absolute;left:0;right:0;top:9px;height:2px;border-radius:2px;background:#F2F1EE;transition:opacity .2s;opacity:{{ bar2Op }}"></span>
+        <span style="position:absolute;left:0;right:0;height:2px;border-radius:2px;background:#F2F1EE;transition:transform .3s,top .3s;top:{{ bar3Top }};transform:{{ bar3Rot }}"></span>
+      </span>
+    </button>
+    </sc-if>
   </div>
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+  <div id="mobile-menu" style="position:absolute;left:0;right:0;top:100%;background:#0A0A0A;border-bottom:1px solid #1E1E1E;padding:8px 20px 28px;display:flex;flex-direction:column;animation:fadeUp .25s ease-out">
+    <a href="#work" onClick="{{ mNav }}" style="text-decoration:none;font-family:'Playfair Display';font-size:30px;padding:16px 0;border-bottom:1px solid #1E1E1E">Projects</a>
+    <a href="#services" onClick="{{ mNav }}" style="text-decoration:none;font-family:'Playfair Display';font-size:30px;padding:16px 0;border-bottom:1px solid #1E1E1E">Services</a>
+    <a href="#experience" onClick="{{ mNav }}" style="text-decoration:none;font-family:'Playfair Display';font-size:30px;padding:16px 0;border-bottom:1px solid #1E1E1E">Experience</a>
+    <a href="#blog" onClick="{{ mBlog }}" style="text-decoration:none;font-family:'Playfair Display';font-size:30px;padding:16px 0;border-bottom:1px solid #1E1E1E">Blog</a>
+    <a onClick="{{ mContact }}" style="cursor:pointer;text-decoration:none;margin-top:24px;text-align:center;background:linear-gradient(100deg,#C9A3FF 0%,#9B5CFF 45%,#6A2CF5 100%);color:#FFFFFF;padding:15px 22px;border-radius:999px;font-weight:500;font-size:16px;box-shadow:0 0 24px rgba(155,92,255,.35)">Start a project</a>
+  </div>
+  </sc-if>
 </nav>
 
 <sc-if value="{{ isHome }}" hint-placeholder-val="{{ true }}">
@@ -346,7 +368,7 @@ html{scroll-behavior:smooth}
 </x-dc>
 <script type="text/x-dc" data-dc-script>
 class Component extends DCLogic {
-  state = { w: 0, t: 0, vw: window.innerWidth, page: 'home', cat: 'ALL', postId: 0, needs: ['Website'], budget: null, sent: false };
+  state = { w: 0, t: 0, vw: window.innerWidth, page: 'home', cat: 'ALL', postId: 0, menu: false, needs: ['Website'], budget: null, sent: false };
   componentDidMount() { this.onR = () => this.setState({ vw: window.innerWidth }); window.addEventListener('resize', this.onR); this.iv = setInterval(() => this.setState(s => ({ w: (s.w + 1) % 4 })), 2600); }
   componentWillUnmount() { clearInterval(this.iv); window.removeEventListener('resize', this.onR); }
   renderVals() {
@@ -370,7 +392,7 @@ class Component extends DCLogic {
       { quote: 'I loved working with Mkpoikana, he delivered on his promises and within deadlines, helping me scale several businesses quickly. He has many skills in SEO, content production, strategy, social media, and building a business. I will continue to utilize his expertise on upcoming personal and client projects. I highly recommend Mkpoikana both as a person and an employee.', who: 'Daniel Shuttleworth', role: 'Web Design & Development · SEO · AI Automation' },
       { quote: 'Mkpoikana isn\'t just a great content writer. His research skills are second to none and he pulls this off for every piece he writes. He\'s the writer you need if you want to fill your blog with engaging pieces that make it to top SERPs and satisfy your audience too.', who: 'Victoria B. Willie', role: 'Creative Strategist & Brand Marketer for Fashion, Lifestyle & B2B businesses' }
     ];
-    return {
+    const v = {
       heroWord: words[s.w], marquee,
       isHome: s.page === 'home', isContact: s.page === 'contact', sent: s.sent, notSent: !s.sent,
       goContact: (e) => { e && e.preventDefault && e.preventDefault(); this.setState({ page: 'contact' }); window.scrollTo(0, 0); },
@@ -416,6 +438,19 @@ class Component extends DCLogic {
       ],
       goBlog: (e) => { e && e.preventDefault && e.preventDefault(); this.setState({ page: 'blog' }); window.scrollTo(0, 0); }
     };
+    const mob = s.vw < 900, mOpen = mob && s.menu, close = () => this.setState({ menu: false });
+    Object.assign(v, {
+      isMobile: mob, notMobile: !mob, menuOpen: mOpen,
+      toggleMenu: () => this.setState(x => ({ menu: !x.menu })),
+      menuWord: mOpen ? 'CLOSE' : 'MENU', menuLabel: mOpen ? 'Close menu' : 'Open menu', menuAria: mOpen ? 'true' : 'false',
+      bar1Top: mOpen ? '9px' : '0px', bar1Rot: mOpen ? 'rotate(45deg)' : 'none',
+      bar2Op: mOpen ? '0' : '1',
+      bar3Top: mOpen ? '9px' : '18px', bar3Rot: mOpen ? 'rotate(-45deg)' : 'none',
+      mNav: (e) => { close(); if (this.state.page !== 'home') { v.navTo(e); return; } e.preventDefault(); const el = document.getElementById(e.currentTarget.getAttribute('href').slice(1)); const nav = document.querySelector('nav'); if (el) window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - (nav ? nav.offsetHeight : 70) + 1, behavior: 'smooth' }); },
+      mBlog: (e) => { close(); v.goBlog(e); },
+      mContact: (e) => { close(); v.goContact(e); }
+    });
+    return v;
   }
 }
 </script>
