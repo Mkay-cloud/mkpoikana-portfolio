@@ -379,7 +379,7 @@ class Component extends DCLogic {
   componentWillUnmount() { clearInterval(this.iv); window.removeEventListener('resize', this.onR); }
   async sendForm() {
     if (this.state.sending) return;
-    const WEB3FORMS_KEY = 'WEB3FORMS_ACCESS_KEY';
+    const WEB3FORMS_KEY = '33295cc0-e066-4f7a-8b9f-6713c5dc58cf';
     const val = (id) => { const el = document.getElementById(id); return el ? el.value.trim() : ''; };
     const name = val('cf-name'), email = val('cf-email'), website = val('cf-site'), message = val('cf-msg');
     const bot = document.getElementById('cf-bot');
